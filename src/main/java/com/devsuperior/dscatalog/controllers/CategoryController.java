@@ -3,7 +3,6 @@ package com.devsuperior.dscatalog.controllers;
 import com.devsuperior.dscatalog.dto.CategoryDTO;
 import com.devsuperior.dscatalog.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -13,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/categories")
-public class ControllerCategory {
+public class CategoryController {
 
     @Autowired
     private CategoryService service;
