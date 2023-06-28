@@ -61,6 +61,15 @@ public class ProductService {
 
     }
 
+    @Transactional
+    public void delete(Long id) {
+//        Optional<Product> product = productRepository.findById(id);
+//        Product productFound = product.orElseThrow(() -> new ResourceNotFoundException("Id not found."));
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Id not found."));
+        productRepository.delete(product);
+    }
+
     private void copyProductDtoToProduct(ProductDTO dto, Product product){
         product.setName(dto.getName());
         product.setDescription(dto.getDescription());
@@ -76,4 +85,6 @@ public class ProductService {
         }
 
     }
+
+
 }
