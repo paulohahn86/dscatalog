@@ -4,12 +4,10 @@ package com.devsuperior.dscatalog.controllers;
 import com.devsuperior.dscatalog.dto.ProductDTO;
 import com.devsuperior.dscatalog.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,5 +22,23 @@ public class ProductController {
         List<ProductDTO> productsDTO = service.findAll();
         return ResponseEntity.ok(productsDTO);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDTO> findById(@PathVariable Long id){
+        ProductDTO productDTO = service.findById(id);
+        return ResponseEntity.ok(productDTO);
+    }
+
+    @PostMapping()
+    public ResponseEntity<ProductDTO> save(@RequestBody ProductDTO dto){
+        ProductDTO productDTO = service.save(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
+    }
+
+//    @PutMapping("/{id}")
+//    public ResponseEntity<ProductDTO> update(@RequestBody ProductDTO dto, @PathVariable Long id){
+//        ProductDTO productDTO = service.update(dto, id);
+//        return ResponseEntity.ok(productDTO);
+//    }
 
 }
