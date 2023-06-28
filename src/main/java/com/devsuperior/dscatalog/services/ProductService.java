@@ -65,9 +65,14 @@ public class ProductService {
     public void delete(Long id) {
 //        Optional<Product> product = productRepository.findById(id);
 //        Product productFound = product.orElseThrow(() -> new ResourceNotFoundException("Id not found."));
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Id not found."));
-        productRepository.delete(product);
+//        Product product = productRepository.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException("Id not found."));
+//        productRepository.delete(product);
+        if(!productRepository.existsById(id)){
+            throw new ResourceNotFoundException("Id not found");
+        }
+        productRepository.deleteById(id);
+
     }
 
     private void copyProductDtoToProduct(ProductDTO dto, Product product){
