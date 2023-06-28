@@ -7,6 +7,7 @@ import com.devsuperior.dscatalog.entity.Product;
 import com.devsuperior.dscatalog.repositories.CategoryRepository;
 import com.devsuperior.dscatalog.repositories.ProductRepository;
 import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +35,7 @@ public class ProductService {
     @Transactional(readOnly = true)
     public ProductDTO findById(Long id) {
        Optional<Product> product = productRepository.findById(id);
-       Product productFound = product.orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+       Product productFound = product.orElseThrow(() -> new ResourceNotFoundException("Id not found."));
        return new ProductDTO(productFound, productFound.getCategorySet());
     }
 
@@ -47,9 +48,18 @@ public class ProductService {
         return new ProductDTO(product, product.getCategorySet());
     }
 
-//    public ProductDTO update(ProductDTO dto, Long id) {
-//    }
+    @Transactional
+    public ProductDTO update(ProductDTO dto, Long id) {
+        try {
+            Product product = productRepository.getReferenceById(id);
+            copyProductDtoToProduct(dto, product);
+            product = productRepository.save(product);
+            return new ProductDTO(product, product.getCategorySet());
+        }catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException("Id not found.");
+        }
 
+    }
 
     private void copyProductDtoToProduct(ProductDTO dto, Product product){
         product.setName(dto.getName());
